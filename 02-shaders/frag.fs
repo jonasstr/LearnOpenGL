@@ -6,5 +6,6 @@ in vec3 position;
 
 void main()
 {
+    // change to ourColor if black shader
     FragColor = vec4(position, 1.0f);
 }

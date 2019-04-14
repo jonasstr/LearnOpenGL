@@ -1,5 +1,5 @@
 #include <cmath>
-#include "../header.h"
+#include "../src/header.h"
 #include "../src/shader.h"
 
 int main() {
