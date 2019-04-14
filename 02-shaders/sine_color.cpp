@@ -1,14 +1,5 @@
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <iostream>
-
-void framebuffer_size_callback(GLFWwindow *window, int width, int height);
-
-void processInput(GLFWwindow *window);
-
-void checkCompilation(GLuint shader);
+#include <cmath>
+#include "../header.h"
 
 const char *vertexShaderSource = "#version 330 core\n"
                                  "layout (location = 0) in vec3 aPos;\n"
@@ -19,9 +10,10 @@ const char *vertexShaderSource = "#version 330 core\n"
 
 const char *fragmentShaderSource = "#version 330 core\n"
                                    "out vec4 FragColor;\n"
+                                   "uniform vec4 customColor;\n"
                                    "void main()\n"
                                    "{\n"
-                                   "   FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
+                                   "   FragColor = customColor;\n"
                                    "}\n\0";
 
 int main() {
@@ -45,6 +37,8 @@ int main() {
     }
 
     glViewport(0, 0, 800, 600);
+    // Wireframe mode:
+    //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
     // ---- VERTEX SHADER ----
     // Create and compile shader from source strings.
@@ -80,9 +74,9 @@ int main() {
     glDeleteShader(fragmentShader);
 
     float vertices[] = {
-            -0.5f, -0.5f, 0.0f,
-            0.5f, -0.5f, 0.0f,
-            0.0f, 0.5f, 0.0f
+            0.0f, 0.5f, 0.0f,  // top
+            -0.5f, -0.5f, 0.0f,  // left
+            0.5f, -0.5f, 0.0f,  // right
     };
 
     unsigned int VBO, VAO;
@@ -92,7 +86,7 @@ int main() {
     // Bind VAO first.
     glBindVertexArray(VAO);
 
-    // Bind and initialize buffer with vertices.
+    // Bind and initialize vertex buffer with vertices.
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
@@ -100,8 +94,7 @@ int main() {
     glEnableVertexAttribArray(0);
 
     // Unbind buffer and vertex array.
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-    glBindVertexArray(0);
+    glBindVertexArray(VAO);
 
     while (!glfwWindowShouldClose(window)) {
         processInput(window);
@@ -110,12 +103,19 @@ int main() {
         glClear(GL_COLOR_BUFFER_BIT);
 
         glUseProgram(shaderProgram);
-        glBindVertexArray(VAO);
+
+        float time = glfwGetTime();
+        float greenValue = (std::sin(time) / 2.0f) + 0.5f;
+        int vertexColorLocation = glGetUniformLocation(shaderProgram, "customColor");
+        glUniform4f(vertexColorLocation, 0.0f, greenValue, 0.0f, 1.0f);
+
         glDrawArrays(GL_TRIANGLES, 0, 3);
 
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
+    glDeleteVertexArrays(1, &VAO);
+    glDeleteBuffers(1, &VBO);
     glfwTerminate();
 }
 
@@ -136,4 +136,5 @@ void checkCompilation(GLuint shader) {
         glGetShaderInfoLog(shader, 512, nullptr, infoLog);
         std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
     }
+
 }
