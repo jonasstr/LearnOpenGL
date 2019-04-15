@@ -11,7 +11,7 @@ int main() {
 
     GLFWwindow *window = glfwCreateWindow(800, 600, "LearnOpenGL", nullptr, nullptr);
     if (window == nullptr) {
-        std::cout << "Failed to create GLFW window" << std::endl;
+        std::cout << "Failed to createProgram GLFW window" << std::endl;
         glfwTerminate();
         return -1;
     }
@@ -25,13 +25,14 @@ int main() {
 
     glViewport(0, 0, 800, 600);
 
-    Shader shader("../02-shaders/vertex.vs", "../02-shaders/frag.fs");
+    ShaderProgram shader("../02-shaders/move.glsl");
+    shader.createProgram();
 
     float vertices[] = {
             // positions         // colors
-            -0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 0.0f,   // bottom right
-            0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 0.0f,   // bottom left
-            0.0f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f    // top
+            0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f,   // bottom right
+            -0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f,   // bottom left
+            0.0f, 0.5f, 0.0f, 0.0f, 0.0f, 1.0f    // top
     };
 
     unsigned int VBO, VAO;
@@ -62,7 +63,10 @@ int main() {
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        shader.run();
+        shader.use();
+        float sin = std::sin(glfwGetTime()) / 2.0f;
+        hader.setFloat("xOffset", sin);
+        hader.setFloat("yOffset", -sin);
 
         glDrawArrays(GL_TRIANGLES, 0, 3);
 

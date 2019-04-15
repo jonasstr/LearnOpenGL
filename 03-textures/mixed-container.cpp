@@ -2,7 +2,7 @@
 #include <cmath>
 #include "../src/header.h"
 #include "../src/shader.h"
-#include "../src/stb_image.cpp"
+#include "../lib/stb_image.cpp"
 
 int main() {
 
@@ -27,7 +27,8 @@ int main() {
 
     glViewport(0, 0, 800, 600);
 
-    Shader shader("../03-textures/vertex.vs", "../03-textures/frag.fs");
+    ShaderProgram shader("../03-textures/default.glsl");
+    shader.createProgram();
 
     float vertices[] = {
             // positions          // colors           // texture1 coords
@@ -109,7 +110,7 @@ int main() {
     }
 
     // Set shader values.
-    shader.run();
+    shader.use();
     shader.setInt("texture1", 0);
     shader.setInt("texture2", 1);
 
@@ -125,7 +126,7 @@ int main() {
         glActiveTexture(GL_TEXTURE1);
         glBindTexture(GL_TEXTURE_2D, texture2);
 
-        shader.run();
+        shader.use();
         glBindVertexArray(VAO);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 
