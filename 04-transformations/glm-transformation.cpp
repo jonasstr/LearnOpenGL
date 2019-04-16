@@ -2,7 +2,9 @@
 #include <cmath>
 #include "../src/header.h"
 #include "../src/shader.h"
+
 #include "stb/stb_image.cpp"
+//#include
 
 int main() {
 
@@ -147,5 +149,3 @@ void processInput(GLFWwindow *window) {
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
 }
-
-

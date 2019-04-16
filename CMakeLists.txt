@@ -11,7 +11,7 @@ set(CMAKE_CXX_STANDARD 14)
 
 # 03: Container texture.
 #add_executable(Test lib/glad.c src/header.h src/shader.h src/shader.cpp 03-textures/mixed-container.cpp)
-add_executable(Test lib/glad.c src/header.h src/shader.h src/shader.cpp 03-textures/x_alpha-container.cpp)
+add_executable(Test src/glad.c src/header.h src/shader.h src/shader.cpp 03-textures/x_alpha-container.cpp)
 
 include_directories("/home/jonas/Dokumente/OpenGL/Libraries/Include")
 target_link_libraries(Test glfw3 GL X11 Xi Xrandr Xxf86vm Xinerama Xcursor rt m pthread dl)

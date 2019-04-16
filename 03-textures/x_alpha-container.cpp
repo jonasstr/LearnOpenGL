@@ -2,7 +2,8 @@
 #include <cmath>
 #include "../src/header.h"
 #include "../src/shader.h"
-#include "../lib/stb_image.cpp"
+
+#include "stb/stb_image.cpp"
 
 float mixValue = 0.0f;
 
