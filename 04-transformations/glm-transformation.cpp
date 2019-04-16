@@ -4,7 +4,9 @@
 #include "../src/shader.h"
 
 #include "stb/stb_image.cpp"
-//#include
+#include "glm/glm.hpp"
+#include "glm/gtc/matrix_transform.hpp"
+#include "glm/gtc/type_ptr.hpp"
 
 int main() {
 
@@ -29,15 +31,15 @@ int main() {
 
     glViewport(0, 0, 800, 600);
 
-    ShaderProgram shader("../03-textures/default.glsl");
+    ShaderProgram shader("../04-transformations/default.glsl");
     shader.createProgram();
 
     float vertices[] = {
-            // positions          // colors           // texture1 coords
-            0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f,   // top right
-            0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f,   // bottom right
-            -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,   // bottom left
-            -0.5f, 0.5f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f    // top left
+            // positions    // texture1 coords
+            0.5f, 0.5f, 0.0f, 1.0f, 1.0f,   // top right
+            0.5f, -0.5f, 0.0f, 1.0f, 0.0f,   // bottom right
+            -0.5f, -0.5f, 0.0f, 0.0f, 0.0f,   // bottom left
+            -0.5f, 0.5f, 0.0f, 0.0f, 1.0f    // top left
     };
 
     unsigned int indices[] = {
@@ -60,16 +62,12 @@ int main() {
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
     // Position attribute.
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void *) nullptr);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void *) nullptr);
     glEnableVertexAttribArray(0);
 
-    // Color attribute.
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void *) (3 * sizeof(float)));
-    glEnableVertexAttribArray(1);
-
     // Texture attribute.
-    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void *) (6 * sizeof(float)));
-    glEnableVertexAttribArray(2);
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void *) (3 * sizeof(float)));
+    glEnableVertexAttribArray(1);
 
     unsigned int texture1, texture2;
     // -- TEXTURE 1 --
@@ -127,6 +125,15 @@ int main() {
         glBindTexture(GL_TEXTURE_2D, texture1);
         glActiveTexture(GL_TEXTURE1);
         glBindTexture(GL_TEXTURE_2D, texture2);
+
+        // Create transformation matrix.
+        glm::mat4 trans = glm::mat4(1.0f);
+        trans = glm::rotate(trans, 2 * 3.141592f * sin((float) glfwGetTime()), glm::vec3(0.0f, 0.0f, 1.0f));
+        trans = glm::translate(trans, glm::vec3(0.5f, -0.5f, 0.0f));
+
+        // Set transform uniform in vertex shader.
+        unsigned int transformLoc = glGetUniformLocation(shader.getId(), "transform");
+        glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(trans));
 
         shader.use();
         glBindVertexArray(VAO);
