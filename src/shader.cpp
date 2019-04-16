@@ -14,7 +14,6 @@ unsigned int Shader::compile() {
     return id;
 }
 
-
 // Read the shaders from the file path and set the shader sources.
 ShaderProgram::ShaderProgram(const std::string &filePath) {
     std::ifstream stream(filePath);
