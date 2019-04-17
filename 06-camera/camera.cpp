@@ -46,6 +46,8 @@ void Camera::processMouseMovement(float xOffset, float yOffset, bool constraintP
         if (pitch < -89.0f)
             pitch = -89.0f;
     }
+    yaw = glm::mod(yaw, 360.0f);
+
     update();
 }
 
