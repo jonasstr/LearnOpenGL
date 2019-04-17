@@ -14,7 +14,13 @@ set(CMAKE_CXX_STANDARD 14)
 #add_executable(Test src/glad.c src/header.h src/shader.h src/shader.cpp 03-textures/x_alpha-container.cpp)
 
 # 04.1 GLM tranformation
-add_executable(Test src/glad.c src/header.h src/shader.h src/shader.cpp 04-transformations/glm-transformation.cpp)
+#add_executable(Test src/glad.c src/header.h src/shader.h src/shader.cpp 04-transformations/glm-transformation.cpp)
+
+# 05.1 Perspective container.
+#add_executable(Test src/glad.c src/header.h src/shader.h src/shader.cpp 05-coordinate-systems/perspective.cpp)
+
+# 05.2 Multiple containers.
+add_executable(Test src/glad.c src/header.h src/shader.h src/shader.cpp 05-coordinate-systems/x_multiple-cubes.cpp)
 
 include_directories("/home/jonas/Dokumente/OpenGL/Libraries/Include")
 target_link_libraries(Test glfw3 GL X11 Xi Xrandr Xxf86vm Xinerama Xcursor rt m pthread dl)
