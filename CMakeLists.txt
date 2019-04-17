@@ -19,8 +19,11 @@ set(CMAKE_CXX_STANDARD 14)
 # 05.1 Perspective container.
 #add_executable(Test src/glad.c src/header.h src/shader.h src/shader.cpp 05-coordinate-systems/perspective.cpp)
 
-# 05.2 Multiple containers.
-add_executable(Test src/glad.c src/header.h src/shader.h src/shader.cpp 05-coordinate-systems/x_multiple-cubes.cpp)
+# 05.2 Multiple containers (+ simple moving camera).
+#add_executable(Test src/glad.c src/header.h src/shader.h src/shader.cpp 05-coordinate-systems/x_multiple-cubes.cpp)
+
+# 06.1
+add_executable(Test src/glad.c src/header.h src/shader.h src/shader.cpp 06-camera/moving-camera.cpp 06-camera/camera.h 06-camera/camera.cpp)
 
 include_directories("/home/jonas/Dokumente/OpenGL/Libraries/Include")
 target_link_libraries(Test glfw3 GL X11 Xi Xrandr Xxf86vm Xinerama Xcursor rt m pthread dl)

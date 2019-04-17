@@ -11,4 +11,6 @@ void framebuffer_size_callback(GLFWwindow *window, int width, int height);
 
 void processInput(GLFWwindow *window);
 
-void checkCompilation(GLuint shader);
+void mouse_callback(GLFWwindow *window, double xPos, double yPos);
+
+void scroll_callback(GLFWwindow* window, double xOffset, double yOffset);
